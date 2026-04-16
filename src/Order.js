@@ -4,29 +4,38 @@ export function handleInput(sInput) {
   return currentState(sInput);
 }
 
-export function clearInput(){
-  currentState = welcoming;  
+export function clearInput() {
+  currentState = welcoming;
 }
 
 function welcoming() {
-  let aReturn = [];
-  currentState = reserving;
-  aReturn.push("Welcome to Rich's Acton Rapid Test.");
-  aReturn.push("Would you like to reserve a rapid test kit?");
-  return aReturn;
+  currentState = choosing;
+  return ["Welcome to Polished Nail Studio!"];
 }
 
-function reserving(sInput) {
-  let aReturn = [];
-  currentState = welcoming
-  if (sInput.toLowerCase().startsWith('y')) {
-    aReturn.push(`Your rapid test is reserved`);
-    let d = new Date();
-    d.setMinutes(d.getMinutes() + 120);
-    aReturn.push(`Please pick it up at 123 Tidy St., Acton before ${d.toTimeString()}`);
-  } else {
-    aReturn.push("Thanks for trying our reservation system");
-    aReturn.push("Maybe next time");
+function choosing(sInput) {
+  const input = sInput.toLowerCase();
+
+  if (input.includes("classic")) {
+    currentState = upselling;
+    return ["Great choice! A Classic Manicure is $32 and takes about 30 minutes."];
+  } 
+  else if (input.includes("gel")) {
+    currentState = upselling;
+    return ["Excellent! A Gel Manicure is $48 and lasts 2-3 weeks chip-free."];
+  } 
+  else {
+    return ["Sorry, I didn't catch that! Please choose either Classic Manicure or Gel Manicure."];
   }
-  return aReturn;
+}
+
+function upselling(sInput) {
+  currentState = welcoming;
+
+  if (sInput.toLowerCase().startsWith("y")) {
+    return ["Amazing! Nail art added to your booking."];
+  } 
+  else {
+    return ["No problem! Your appointment is confirmed at Polished Nail Studio, 456 Glamour Ave, Burlington."];
+  }
 }
